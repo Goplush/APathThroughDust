@@ -5,17 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0cf85ede-5fe6-44ff-8888-3a8ad3e1d7ef" name="Changes" comment="Reorganeze project">
+      <change afterPath="$PROJECT_DIR$/ChainManagementServer/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/APathThroughDust.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/APathThroughDust.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlockChain/DBCommand.py" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/DBCommand.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlockChain/SmartContractEngine/Engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/BlockChain/SmartContractEngine/Engine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlockChain/blockchain.py" beforeDir="false" afterPath="$PROJECT_DIR$/BlockChain/blockchain.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RegisterServer/blockchain.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/RegisterServer/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RegisterServer/query.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/realNameAuth.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RegisterServer/tempkeys/Aliceprivatekey.pom" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RegisterServer/templates/ConfirmRegister.html" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/templates/ConfirmRegister.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RegisterServer/templates/postRegister.html" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/templates/postRegister.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RegisterServer/templates/welcome.html" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/templates/welcome.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/util/rsaSignVerify.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/rsaSignVerify.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
     <envs>
@@ -44,7 +58,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/Temp/APathThroughDust",
+    "last_opened_file_path": "D:/Temp/APathThroughDust/RegisterServer",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -55,6 +69,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Temp\APathThroughDust\Resources" />
+      <recent name="D:\Temp\APathThroughDust\BlockChain" />
+      <recent name="D:\Temp\APathThroughDust\RegisterServer" />
       <recent name="D:\Temp\APathThroughDust" />
     </key>
   </component>
@@ -93,7 +110,7 @@
       <option name="presentableId" value="Default" />
       <updated>1685619535264</updated>
       <workItem from="1685619536285" duration="65000" />
-      <workItem from="1685619625672" duration="2648000" />
+      <workItem from="1685619625672" duration="7231000" />
     </task>
     <task id="LOCAL-00001" summary="DeleteSomeInfo">
       <created>1685619766094</created>
@@ -119,5 +136,8 @@
     <MESSAGE value="DeleteSomeInfo" />
     <MESSAGE value="Reorganeze project" />
     <option name="LAST_COMMIT_MESSAGE" value="Reorganeze project" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/APathThroughDust$main.coverage" NAME="main 覆盖结果" MODIFIED="1685627336098" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RegisterServer" />
   </component>
 </project>

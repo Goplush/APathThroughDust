@@ -4,7 +4,7 @@
 #运行交易智能合约
 from BlockChain.Contracts.TradeContract import *
 from BlockChain.Contracts.CommentContract import *
-from RegisterServer.blockchain import Blockchain
+from BlockChain.blockchain import Blockchain
 class Engine:
 
     def runTradeContract(trade):

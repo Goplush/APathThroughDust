@@ -1,14 +1,11 @@
-from flask import jsonify, request, render_template, abort, send_from_directory
+from flask import request, render_template, abort, send_from_directory
 import flask  # For creating a web application interface
 
 from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA256
-from base64 import b64decode
 
-
-from BlockChain.DBCommand import getDBConnection, RegUser2DB
-from util.rsaSignVerify import getPubKey
+from RegisterServer.DBCommand import getDBConnection, RegUser2DB, getPubKey
+from util.rsaSignVerify import verify_sign, rsaKeyPairGen
 
 app = flask.Flask(__name__)
 
@@ -74,12 +71,12 @@ def confirm():
         return "注册出现错误"
 
     # 将私钥写入临时文件
-    filePath = 'BlockChain/Server/tempkeys/' + username + 'privatekey.pom'  # 私钥临时文件的相对地址
+    filePath = '../Resources/TmpKeys/' + username + 'privatekey.pom'  # 私钥临时文件的相对地址
     keyfile = open(filePath, 'wb')
     keyfile.write(keypem)
     keyfile.close()
 
-    temp_url = '123.56.121.72:5000/tempkeys/' + username + 'privatekey.pom'
+    temp_url = 'localhost:5000/tempkeys/' + username + 'privatekey.pom'
     return render_template("postRegister.html", privatekeyURL=temp_url)
 
 
@@ -91,10 +88,10 @@ def confirm():
 def serve_temp_file(filename):
     # 临时目录
     #print('进入私钥下载流程')
-    relativeFilePathtoProj = 'BlockChain/Server/tempkeys/' + filename
+    relativeFilePathtoProj = 'Resources/TmpKeys/' + filename
 
     # 发送文件
-    return send_from_directory("/root/projs/APathThroughtheDust2/", relativeFilePathtoProj, as_attachment=True)
+    return send_from_directory("D:/Temp/APathThroughDust/", relativeFilePathtoProj, as_attachment=True)
 
 
 ''''
@@ -132,36 +129,6 @@ def realNameAuthentication():
     return "签名错误，请确认私钥无误后重新提交实名认证申请"
 
 
-
-
-
-# 生成2048位rsa密钥对
-def rsaKeyPairGen():
-    # 生成 RSA 私钥
-    key = RSA.generate(2048)
-
-    # 获取私钥（PEM 格式）
-    private_key = key.export_key(format='PEM')
-
-    # 获取公钥（PEM 格式）
-    public_key = key.publickey().export_key(format='PEM')
-
-    # print("私钥长度为："+private_key.__len__())
-    # print("公钥长度为："+public_key.__len__())
-
-    # 返回私钥和公钥的 PEM 编码
-    return private_key, public_key
-
-
-
-
-
-# RSA公钥验签
-def verify_sign(unsigned_data, signature, pub_key):
-    verifier = PKCS1_v1_5.new(pub_key)
-    digest = SHA256.new()
-    digest.update(unsigned_data.encode("utf-8"))
-    return verifier.verify(digest, b64decode(signature))
 
 
 # 确认昵称是否被注册
