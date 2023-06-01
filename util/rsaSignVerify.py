@@ -3,7 +3,7 @@ from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA256
 
-from RegisterServer.DBCommand import getDBConnection, getPubKey
+from BlockChain.DBCommand import getDBConnection, getPubKey
 
 
 # 由pem文件包装出密钥（用于读取用户保存的私钥）

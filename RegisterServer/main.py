@@ -1,14 +1,13 @@
 from flask import jsonify, request, render_template, abort, send_from_directory
 import flask  # For creating a web application interface
-import pymysql
+
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA256
 from base64 import b64decode
-import datetime
-import tempfile
 
-from RegisterServer.DBCommand import getDBConnection, RegUser2DB
+
+from BlockChain.DBCommand import getDBConnection, RegUser2DB
 from util.rsaSignVerify import getPubKey
 
 app = flask.Flask(__name__)
