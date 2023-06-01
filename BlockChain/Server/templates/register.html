@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+    <style>
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Registration</h1>
+    <form  method="POST">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required>
+
+        <label for="usertype">User Type:</label>
+        <input type="radio" name="usertype" value="personal" required> Personal User
+        <input type="radio" name="usertype" value="business" required> Business User
+
+        <label for="duration">Account Duration:</label>
+        <select name="duration" id="duration" required>
+            <option value="">Select Duration</option>
+            {% for i in range(3, 31) %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" name="Submit" value="Submit">
+    </form>
+</body>
+</html>
