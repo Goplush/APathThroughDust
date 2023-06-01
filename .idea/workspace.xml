@@ -4,25 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0cf85ede-5fe6-44ff-8888-3a8ad3e1d7ef" name="Changes" comment="DeleteSomeInfo">
-      <change afterPath="$PROJECT_DIR$/util/rsaSignVerify.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/utiltest.py" afterDir="false" />
+    <list default="true" id="0cf85ede-5fe6-44ff-8888-3a8ad3e1d7ef" name="Changes" comment="Reorganeze project">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/Server/blockchain.py" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/blockchain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/Server/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/Server/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/query.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/Server/tempkeys/Aliceprivatekey.pom" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/tempkeys/Aliceprivatekey.pom" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/Server/templates/ConfirmRegister.html" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/templates/ConfirmRegister.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/Server/templates/postRegister.html" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/templates/postRegister.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/Server/templates/realNameAuth.html" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/templates/realNameAuth.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/Server/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/templates/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/Server/templates/welcome.html" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/templates/welcome.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/SmartContractEngine/Engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/BlockChain/SmartContractEngine/Engine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/util/encryptutil.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/encryptutil.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/util/realNameAuth.html" beforeDir="false" afterPath="$PROJECT_DIR$/util/realNameAuth.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/util/rsaSignVerify.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/util/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlockChain/util/utiltest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RegisterServer/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/RegisterServer/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RegisterServer/query.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/realNameAuth.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/rsaSignVerify.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/rsaSignVerify.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +58,32 @@
       <recent name="D:\Temp\APathThroughDust" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="APathThroughDust" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/RegisterServer" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RegisterServer/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -79,7 +93,7 @@
       <option name="presentableId" value="Default" />
       <updated>1685619535264</updated>
       <workItem from="1685619536285" duration="65000" />
-      <workItem from="1685619625672" duration="1252000" />
+      <workItem from="1685619625672" duration="2648000" />
     </task>
     <task id="LOCAL-00001" summary="DeleteSomeInfo">
       <created>1685619766094</created>
@@ -88,7 +102,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685619766094</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Reorganeze project">
+      <created>1685620919684</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1685620919684</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -96,6 +117,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="DeleteSomeInfo" />
-    <option name="LAST_COMMIT_MESSAGE" value="DeleteSomeInfo" />
+    <MESSAGE value="Reorganeze project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reorganeze project" />
   </component>
 </project>

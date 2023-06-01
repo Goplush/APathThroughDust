@@ -8,6 +8,9 @@ from base64 import b64decode
 import datetime
 import tempfile
 
+from RegisterServer.DBCommand import getDBConnection, RegUser2DB
+from util.rsaSignVerify import getPubKey
+
 app = flask.Flask(__name__)
 
 
@@ -68,31 +71,31 @@ def confirm():
     username = request.form['username']
     usertype = request.form['usertype']
     duration = request.form['duration']
-    if (not __RegUser2DB(username, usertype, duration, pubkeypem)):
+    if (not RegUser2DB(username, usertype, duration, pubkeypem)):
         return "注册出现错误"
 
     # 将私钥写入临时文件
-    filePath = 'BlockChain/RegisterServer/tempkeys/' + username + 'privatekey.pom'  # 私钥临时文件的相对地址
+    filePath = 'BlockChain/Server/tempkeys/' + username + 'privatekey.pom'  # 私钥临时文件的相对地址
     keyfile = open(filePath, 'wb')
     keyfile.write(keypem)
     keyfile.close()
 
-    temp_url = '123.56.121.72:5000/tempKey/' + filePath
+    temp_url = '123.56.121.72:5000/tempkeys/' + username + 'privatekey.pom'
     return render_template("postRegister.html", privatekeyURL=temp_url)
+
 
 
 '''
 私钥下载页面
 '''
-
-
-@app.route('/tempkey/<filename>')
+@app.route('/tempkeys/<filename>', methods=['GET'])
 def serve_temp_file(filename):
     # 临时目录
-    temp_dir = tempfile.gettempdir()
+    #print('进入私钥下载流程')
+    relativeFilePathtoProj = 'BlockChain/Server/tempkeys/' + filename
 
     # 发送文件
-    return send_from_directory(temp_dir, filename, as_attachment=True)
+    return send_from_directory("/root/projs/APathThroughtheDust2/", relativeFilePathtoProj, as_attachment=True)
 
 
 ''''
@@ -115,9 +118,9 @@ def realNameAuthentication():
     idNum    = request.form['id_number']
     sig      = request.form['signature']
 
-    print(nickName)
-    print(realName)
-    print(idNum)
+    #print(nickName)
+    #print(realName)
+    #print(idNum)
 
 
     #确认昵称已经注册
@@ -130,29 +133,7 @@ def realNameAuthentication():
     return "签名错误，请确认私钥无误后重新提交实名认证申请"
 
 
-# 由用户的昵称得到他的公钥
-def getPubKey(nickname):
-    # 连接到MySQL数据库
-    connection = __getDBConnection()
 
-    try:
-        with connection.cursor() as cursor:
-            # 查询特定用户的公钥
-            sql = "SELECT rsa_public_key FROM ChainUser WHERE nickname = %s"
-            cursor.execute(sql, (nickname,))
-            result = cursor.fetchone()
-
-            if result is not None:
-                public_key = result['rsa_public_key']
-                print(f"用户 '{nickname}' 的公钥：{public_key}")
-                return public_key
-            else:
-                print(f"用户 '{nickname}' 不存在。")
-                return None
-
-    finally:
-        # 关闭数据库连接
-        connection.close()
 
 
 # 生成2048位rsa密钥对
@@ -173,35 +154,7 @@ def rsaKeyPairGen():
     return private_key, public_key
 
 
-def __RegUser2DB(nickName, userType, validTime, publicKeyPem):
-    # 连接到MySQL数据库
-    connection = __getDBConnection()
 
-    try:
-        with connection.cursor() as cursor:
-            # 插入用户的注册信息
-            sql = "INSERT INTO ChainUser (nickname, rsa_public_key, registration_time, user_type, valid_time) VALUES (%s, %s, %s, %s, %s)"
-            nickname = nickName
-            registration_time = datetime.datetime.now().strftime("%Y-%m-%d")
-            user_type = userType
-            # 修改usertype和validTime，将validTime单位统一为天
-            if userType == 'personal':
-                user_type = 1
-                valid_time = validTime
-            else:
-                user_type = 2
-                valid_time = validTime * 365
-
-            cursor.execute(sql, (nickname, publicKeyPem, registration_time, user_type, valid_time))
-        # 提交事务
-        connection.commit()
-        print("用户注册信息已成功插入数据库！")
-        return True
-    except:
-        return False
-    finally:
-        # 关闭数据库连接
-        connection.close()
 
 
 # RSA公钥验签
@@ -215,7 +168,7 @@ def verify_sign(unsigned_data, signature, pub_key):
 # 确认昵称是否被注册
 def is_nickname_registered(nickname):
     # 连接到MySQL数据库
-    connection = __getDBConnection()
+    connection = getDBConnection()
 
     try:
         with connection.cursor() as cursor:
@@ -243,7 +196,7 @@ def __insert_user_real_name(nickname, real_name, id_number):
     hash_value = h.digest()
 
     # 连接到MySQL数据库
-    connection = __getDBConnection()
+    connection = getDBConnection()
 
     try:
         with connection.cursor() as cursor:
@@ -260,18 +213,8 @@ def __insert_user_real_name(nickname, real_name, id_number):
         connection.close()
 
 
-# 获取到数据库的连接
-def __getDBConnection():
-    connection = pymysql.connect(
-        host='localhost',
-        user='DustAdmin',
-        password='zud9@6tCgKCfzzMg',
-        db='APathThroughTheDust',
-        charset='utf8',
-        cursorclass=pymysql.cursors.DictCursor
-    )
 
-    return connection
+
 
 
 # Running the Web App
