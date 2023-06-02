@@ -1,0 +1,3 @@
+import DBCommand
+
+DBCommand.getDBConnection()

@@ -1,7 +1,14 @@
+import pickle
 import socket
 from urllib import request
+from util.rsaSignVerify import get_key, generate_sign
+
 
 class Message:
+    '''
+    要求content为str
+    '''
+
     def __init__(self, sender, receiver, message_type, content):
         self.sender = sender
         self.receiver = receiver
@@ -9,12 +16,18 @@ class Message:
         self.req_num = 0
         self.signature = 0
         self.content = content
-    
+
 
 class PBFTNode:
-    def __init__(self, node_id, total_nodes, host, port):
+    def __init__(self, node_id, host, port, nickname, pri_key_file):
         self.node_id = node_id
-        self.total_nodes = total_nodes
+        self.total_nodes = []
+        self.nickname = nickname
+        try:
+            self.pri_key = get_key(pri_key_file)
+        except Exception as e:
+            print("invalid private key file")
+            exit(-1)
         self.host = host
         self.port = port
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -47,15 +60,22 @@ class PBFTNode:
         else:
             print("Failed to fetch active nodes from the server.")
             return []
-    
+
     def send_message(self, message, destination):
         # 发送消息到目标节点
         # 可以使用网络通信库（如socket）发送消息
         pass
 
     def receive_message(self):
-        # 接收来自其他节点的消息
-        # 可以使用网络通信库（如socket）接收消息
+        # 遍历节点的连接并接收消息
+        for node_socket in self.total_nodes:
+            try:
+                data = node_socket.recv(1024)  # 接收消息
+                if data:
+                    message = pickle.loads(data)
+                    self.message_queue.append(message)  # 将消息放入处理队列
+            except Exception as e:
+                print(f"Failed to receive message from socket: {str(e)}")
         pass
 
     def process_messages(self):
@@ -112,7 +132,6 @@ class PBFTNode:
 
         # 验证消息是否来自主节点
         if self.is_primary(sender):
-            requestnum = message.req_num
 
             # 创建并签名PREPARE消息
             self.sign_message(message)
@@ -120,7 +139,6 @@ class PBFTNode:
             # 广播PREPARE消息给其他成员
             self.broadcast_message(content)
 
-    
     def process_prepare(self, message):
         # 处理PREPARE消息
         # 实现PREPARE消息的处理逻辑
@@ -172,9 +190,9 @@ class PBFTNode:
         pass
 
     def sign_message(self, message):
-        # 对消息进行签名
-        # 实现签名逻辑
-        pass
+        sig = generate_sign(message.content, self.pri_key)
+        message.signature = sig
+        return
 
     def main_loop(self):
         # 节点的主循环
@@ -182,17 +200,4 @@ class PBFTNode:
             self.receive_message()
             self.process_messages()
 
-def is_socket_closed(sock: socket.socket) -> bool:
-    try:
-        # this will try to read bytes without blocking and also without removing them from buffer (peek only)
-        data = sock.recv(16, socket.MSG_DONTWAIT | socket.MSG_PEEK)
-        if len(data) == 0:
-            return True
-    except BlockingIOError:
-        return False  # socket is open and reading from it would block
-    except ConnectionResetError:
-        return True  # socket was closed for some other reason
-    except Exception as e:
-        print("unexpected exception when checking if a socket is closed")
-        return True
-    return False
+
