@@ -7,7 +7,7 @@ from Crypto.PublicKey import RSA
 # 获取到数据库的连接
 def getDBConnection():
     connection = pymysql.connect(
-        host='localhost',
+        host='123.56.121.72',
         user='DustAdmin',
         password='zud9@6tCgKCfzzMg',
         db='APathThroughTheDust',

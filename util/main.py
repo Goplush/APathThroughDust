@@ -1,9 +1,9 @@
 from flask import request, render_template, abort, send_from_directory
 import flask  # For creating a web application interface
 from Crypto.Hash import SHA256
-from DBCommand import getDBConnection, RegUser2DB, getPubKey
 import sys
 sys.path.append("/root/projs/APathThroughDust")
+from util.DBCommand import getDBConnection, RegUser2DB, getPubKey
 import os
 import util.rsaSignVerify as rsautil
 
