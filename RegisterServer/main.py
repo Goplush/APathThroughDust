@@ -1,11 +1,11 @@
 from flask import request, render_template, abort, send_from_directory
 import flask  # For creating a web application interface
-
-from Crypto.PublicKey import RSA
 from Crypto.Hash import SHA256
-
-from RegisterServer.DBCommand import getDBConnection, RegUser2DB, getPubKey
-from util.rsaSignVerify import verify_sign, rsaKeyPairGen
+from DBCommand import getDBConnection, RegUser2DB, getPubKey
+import sys
+sys.path.append("/root/projs/APathThroughDust")
+import os
+import util.rsaSignVerify as rsautil
 
 app = flask.Flask(__name__)
 
@@ -63,7 +63,7 @@ def register():
 
 @app.route('/confirmReg', methods=['POST'])
 def confirm():
-    keypem, pubkeypem = rsaKeyPairGen()
+    keypem, pubkeypem = rsautil.rsaKeyPairGen()
     username = request.form['username']
     usertype = request.form['usertype']
     duration = request.form['duration']
@@ -71,7 +71,7 @@ def confirm():
         return "注册出现错误"
 
     # 将私钥写入临时文件
-    filePath = '../Resources/TmpKeys/' + username + 'privatekey.pom'  # 私钥临时文件的相对地址
+    filePath = 'Resources/TmpKeys/' + username + 'privatekey.pom'  # 私钥临时文件的相对地址
     keyfile = open(filePath, 'wb')
     keyfile.write(keypem)
     keyfile.close()
@@ -89,9 +89,9 @@ def serve_temp_file(filename):
     # 临时目录
     #print('进入私钥下载流程')
     relativeFilePathtoProj = 'Resources/TmpKeys/' + filename
-
+    abPath=os.path.abspath("/root/projs/APathThroughDust")
     # 发送文件
-    return send_from_directory("D:/Temp/APathThroughDust/", relativeFilePathtoProj, as_attachment=True)
+    return send_from_directory(abPath+'/', relativeFilePathtoProj, as_attachment=True)
 
 
 ''''
@@ -123,7 +123,7 @@ def realNameAuthentication():
     if(not is_nickname_registered(nickName)):
         return "还未注册，请返回主界面注册"
     pubKey = getPubKey(nickName)
-    if(verify_sign(realName+"+"+idNum,sig,pubKey)):
+    if(rsautil.verify_sign(realName+"+"+idNum,sig,pubKey)):
         __insert_user_real_name(nickName,realName,idNum)
         return "注册成功"
     return "签名错误，请确认私钥无误后重新提交实名认证申请"
