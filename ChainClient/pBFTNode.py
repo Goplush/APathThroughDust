@@ -6,7 +6,10 @@ class Message:
         self.sender = sender
         self.receiver = receiver
         self.message_type = message_type
+        self.req_num = 0
+        self.signature = 0
         self.content = content
+    
 
 class PBFTNode:
     def __init__(self, node_id, total_nodes, host, port):
@@ -103,9 +106,20 @@ class PBFTNode:
         pass
 
     def process_pre_prepare(self, message):
-        # 处理PREPREPARE消息
-        # 实现PREPREPARE消息的处理逻辑
-        pass
+        # 处理PRE-PREPARE消息
+        sender = message.sender
+        content = message.content
+
+        # 验证消息是否来自主节点
+        if self.is_primary(sender):
+            requestnum = message.req_num
+
+            # 创建并签名PREPARE消息
+            self.sign_message(message)
+
+            # 广播PREPARE消息给其他成员
+            self.broadcast_message(content)
+
     
     def process_prepare(self, message):
         # 处理PREPARE消息
@@ -145,6 +159,21 @@ class PBFTNode:
     def handle_view_change_votes(self):
         # 处理视图转换的投票结果
         # 实现视图转换投票结果的处理逻辑
+        pass
+
+    def is_primary(self, node_id):
+        # 判断节点是否为主节点
+        # 实现判断逻辑
+        pass
+
+    def broadcast_message(self, message):
+        # 广播消息给其他成员
+        # 实现广播消息的逻辑
+        pass
+
+    def sign_message(self, message):
+        # 对消息进行签名
+        # 实现签名逻辑
         pass
 
     def main_loop(self):
