@@ -74,3 +74,24 @@ def getPubKey(nickname):
     finally:
         # 关闭数据库连接
         connection.close()
+        
+def get_user_real_name(nickname):
+    # 连接到MySQL数据库
+    connection = getDBConnection()
+
+    try:
+        with connection.cursor() as cursor:
+            # 执行SELECT语句查询用户实名信息
+            sql = "SELECT * FROM UserRealName WHERE nickname = %s"
+            cursor.execute(sql, (nickname,))
+            result = cursor.fetchone()
+
+            if result:
+                # 输出用户实名信息
+                rname = result['real_name']
+            else:
+                print("未找到与该昵称匹配的用户实名信息！")
+
+    finally:
+        # 关闭数据库连接
+        connection.close()
