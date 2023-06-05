@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>交易页面</title>
+</head>
+<body>
+    <h1>交易页面</h1>
+    <form method="post" action="/transaction">
+        <label for="nickname">对象的昵称:</label>
+        <input type="text" id="nickname" name="nickname"><br><br>
+
+        <label for="amount">交易金额:</label>
+        <input type="text" id="amount" name="amount"><br><br>
+
+        <label for="sender_signature">发起方签名:</label>
+        <input type="text" id="sender_signature" name="sender_signature"><br><br>
+
+        <label for="receiver_signature">接收方签名（请留空）:</label>
+        <input type="text" id="receiver_signature" name="receiver_signature"><br><br>
+
+        <input type="submit" value="提交">
+    </form>
+
+    <h2>所有交易文件</h2>
+    <ul>
+        {% for file in transaction_files %}
+        <li><a href="/transaction/{{ file }}">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
