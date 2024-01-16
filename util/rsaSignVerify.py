@@ -3,6 +3,10 @@ from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA256
 
+import sys
+sys.path.append('/root/APathThroughDust')#替换为项目的实际根目录的绝对地址
+from util.DBCommand import getPubKey
+
 
 # 由pem文件包装出密钥（用于读取用户保存的私钥）
 def get_key(path):
@@ -21,8 +25,8 @@ def rsaKeyPairGen():
     # 获取公钥（PEM 格式）
     public_key = key.publickey().export_key(format='PEM')
 
-    #print("私钥长度为：" + str(private_key.__len__()))
-    #print("公钥长度为：" + str(public_key.__len__()))
+    print("私钥长度为：" + str(private_key.__len__()))
+    print("公钥长度为：" + str(public_key.__len__()))
 
     # 返回私钥和公钥的 PEM 编码
     return private_key, public_key
@@ -35,6 +39,10 @@ paras：
     pri_key:RSA.import_key(<PEM_DATA>)
 '''
 
+def open_key(path):
+    with open(path, "r") as key_file:
+        key = RSA.import_key(key_file.read())
+    return key
 
 def generate_sign(unsigned_data, pri_key):
     signer = PKCS1_v1_5.new(pri_key)
@@ -52,3 +60,9 @@ def verify_sign(unsigned_data, signature, pub_key):
     return verifier.verify(digest, b64decode(signature))
 
 
+if __name__ == '__main__':
+    private_key = open_key('Resources/TmpKeys/test2privatekey.pom')
+    pub_key = getPubKey('test2')
+    sign = generate_sign('test1+0+2024-04-04+2024-05-12', private_key)
+    verify = verify_sign('test1+0+2024-04-04+2024-05-12' ,sign, pub_key)
+    print(sign)

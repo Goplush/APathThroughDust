@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Travel Details</title>
+    <style>
+        /* 上方蓝条样式 */
+        .top-bar {
+          background-color: rgb(28, 161, 233);
+          height: 50px;
+          display: flex;
+          align-items: left;
+          justify-content: center;
+        }
+        
+        /* 下方蓝条样式 */
+        .bottom-bar {
+          background-color: rgb(28, 161, 233);
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        /* 图片样式 */
+        .logo {
+          max-width: 100px;
+          max-height: 100px;
+        }
+    </style>
+    <style>
+        .event {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        function limitCheckbox(checkbox) {
+            var checkboxes = document.getElementsByName('event_checkbox');
+            checkboxes.forEach(function(cb) {
+                if (cb !== checkbox) {
+                    cb.checked = false;
+                }
+            });
+        }
+
+        function addNecessaryEvent() {
+            var checkboxes = document.getElementsByName('event_checkbox');
+            var selectedEvent = Array.from(checkboxes).find(cb => cb.checked);
+            if (selectedEvent) {
+                var requiredParticipant = selectedEvent.getAttribute('data-required-participant');
+                var eventIndex = selectedEvent.getAttribute('data-event-index');
+                var description = selectedEvent.getAttribute('data-description');
+                
+                // Redirect to add necessary event page with parameters
+                window.location.href = `/addnecessaryevent?participants=${encodeURIComponent('{{ participants }}')}&start_date=${encodeURIComponent('{{ start_date }}')}&end_date=${encodeURIComponent('{{ end_date }}')}&required_participant=${encodeURIComponent(requiredParticipant)}&event_index=${encodeURIComponent(eventIndex)}&description=${encodeURIComponent(description)}`;
+            } else {
+                alert('Please select an event to add.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="top-bar">
+        <img class="logo" src="../static/logo.png" alt="logo">
+    </div>
+    <h2>行程详情</h2>
+    <h3>参与者: {{ participants }}</h3>
+    <h3>开始日期: {{ start_date }}</h3>
+    <h3>结束日期: {{ end_date }}</h3>
+
+    <div id="events">
+        {% if necessary_events %}
+            <h3>Necessary Events:</h3>
+            {% for event in necessary_events %}
+                <div class="event">
+                    <label>
+                        <input type="checkbox" name="event_checkbox" onchange="limitCheckbox(this)"
+                               data-required-participant="{{ event.required_participant }}"
+                               data-event-index="{{ loop.index0 }}"
+                               data-description="{{ event.description }}"
+                               {% if event.event_h >= 0 %} checked disabled{% endif %}>
+                        <strong>必须事件:</strong> {{ event.required_participant }} |
+                        <strong>描述:</strong> {{ event.description }} |
+                        <strong>序号:</strong> {{ event.event_index }}
+                    </label>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <form action="/addevent" method="get">
+        <input type="hidden" name="participants" value="{{ participants }}">
+        <input type="hidden" name="start_date" value="{{ start_date }}">
+        <input type="hidden" name="end_date" value="{{ end_date }}">
+        <input type="submit" value="添加普通事件">
+    </form>
+
+    <button onclick="addNecessaryEvent()">添加必须事件</button>
+    <div class="bottom-bar">
+        版权所属 张天逸
+    </div>
+</body>
+</html>

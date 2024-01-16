@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Travel Information</title>
+    <style>
+        /* 上方蓝条样式 */
+        .top-bar {
+          background-color: rgb(28, 161, 233);
+          height: 50px;
+          display: flex;
+          align-items: left;
+          justify-content: center;
+        }
+        
+        /* 下方蓝条样式 */
+        .bottom-bar {
+          background-color: rgb(28, 161, 233);
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        /* 图片样式 */
+        .logo {
+          max-width: 100px;
+          max-height: 100px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.1.0/jsencrypt.min.js"></script>
+    <script src="../static/crypto-js-4.2.0/crypto-js.js"></script> 
+    <script type="text/javascript">
+        function signMessage() {
+            var messages = []; // 创建一个数组用于存储所有文本框中的内容
+
+            // 获取文本框中的内容
+            messages.push(document.getElementById('participants').value)
+            messages.push(document.getElementById('destination').value)
+            messages.push(document.getElementById('start_date').value)
+            messages.push(document.getElementById('end_date').value)
+
+            
+
+
+            var concatenatedMessage = messages.join("+"); // 将所有内容用“+”连接起来
+            var cprivateKey = document.getElementById("c_privateKey").files[0]; // 获取用户上传的私钥文件
+            var pprivateKey = document.getElementById("p_privateKey").files[0]; // 获取用户上传的私钥文件
+            var reader1 = new FileReader();
+            var reader2 = new FileReader();
+
+            reader1.onload = function(event) {
+                var privateKeyText = event.target.result;
+                var jsEncrypt = new JSEncrypt();
+                jsEncrypt.setPrivateKey(privateKeyText); // 设置私钥
+
+                var signature = jsEncrypt.sign(concatenatedMessage, CryptoJS.SHA256, 'sha256'); // 使用私钥签名连接后的信息
+                document.getElementById('creator_sign').value = signature; 
+                alert("创建者签名已生成"); 
+            };
+
+            reader1.readAsText(cprivateKey);
+
+            reader2.onload = function(event) {
+                var privateKeyText = event.target.result;
+                var jsEncrypt = new JSEncrypt();
+                jsEncrypt.setPrivateKey(privateKeyText); // 设置私钥
+
+                var signature = jsEncrypt.sign(concatenatedMessage, CryptoJS.SHA256, 'sha256'); // 使用私钥签名连接后的信息
+                document.getElementById('participant_sign').value = signature; 
+                alert("参与者签名已生成"); 
+            };
+
+            reader2.readAsText(pprivateKey);
+        }
+    </script>
+
+<script>
+    function addNecessaryEvent() {
+        var necessaryCountInput = document.getElementById('necessary_count');
+        var necessaryCount = parseInt(necessaryCountInput.value);
+
+        var div = document.createElement('div');
+        div.id = 'necessary_event_' + necessaryCount;
+
+        div.innerHTML ='<label for="p2_' + necessaryCount + '">必须事件的另一者:</label>' +
+            '<input type="text" id="p2_' + necessaryCount + '" name="p2_' + necessaryCount + '">' +
+            '<label for="info_' + necessaryCount + '">必须事件描述:</label>' +
+            '<input type="text" id="info_' + necessaryCount + '" name="info_' + necessaryCount + '">';
+
+        document.getElementById('necessary_events').appendChild(div);
+
+        necessaryCountInput.value = necessaryCount + 1;
+    }
+
+    function removeNecessaryEvent() {
+        var necessaryCountInput = document.getElementById('necessary_count');
+        var necessaryCount = parseInt(necessaryCountInput.value);
+
+        if (necessaryCount > 0) {
+            var div = document.getElementById('necessary_event_' + (necessaryCount - 1));
+            div.parentNode.removeChild(div);
+            necessaryCountInput.value = necessaryCount - 1;
+        }
+    }
+</script>
+</head>
+<body>
+    <div class="top-bar">
+        <img class="logo" src="../static/logo.png" alt="logo">
+    </div>
+    <form action="/addtravel" method="post">
+        <label for="creator">旅行创建者:</label>
+        <input type="text" id="creator" name="creator"><br><br>
+
+        <label for="participants">旅行参与者:</label>
+        <input type="text" id="participants" name="participants"><br><br>
+
+        <label for="destination">目的地:</label>
+        <input type="text" id="destination" name="destination"><br><br>
+
+        <label for="start_date">开始日期 (YYYY-MM-DD):</label>
+        <input type="text" id="start_date" name="start_date"><br><br>
+
+        <label for="end_date">结束日期 (YYYY-MM-DD):</label>
+        <input type="text" id="end_date" name="end_date"><br><br>
+
+        <div id="necessary_events">
+            <!-- Initial necessary events fields -->
+            
+        </div>
+        <input type="hidden" id="necessary_count" name="necessary_count" value="0">
+        <input type="hidden" id="creator_sign" name="creator_sign" value="0">
+        <input type="hidden" id="participant_sign" name="participant_sign" value="0">
+
+        <!-- 选择包含RSA私钥的文件 -->
+        <label for="privateKey">请选择创建者私钥</label>
+        <input type="file" id="c_privateKey"><br><br>
+        <label for="privateKey">请选择参与者私钥</label>
+        <input type="file" id="p_privateKey"><br><br>
+
+        <!-- 按钮触发签名操作 -->
+        <button type="button" onclick=signMessage()>确定</button>
+
+        <br>
+        <button type="button" onclick="addNecessaryEvent()">Add Necessary Event</button>
+        <button type="button" onclick="removeNecessaryEvent()">Remove Necessary Event</button>
+        <input type="submit" value="Submit">
+    </form>
+    <div class="bottom-bar">
+        版权所属 张天逸
+    </div>
+</body>
+</html>

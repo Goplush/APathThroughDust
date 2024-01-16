@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* 上方蓝条样式 */
+        .top-bar {
+          background-color: rgb(28, 161, 233);
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        /* 下方蓝条样式 */
+        .bottom-bar {
+          background-color: rgb(28, 161, 233);
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        /* 图片样式 */
+        .logo {
+          max-width: 100px;
+          max-height: 100px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.1.0/jsencrypt.min.js"></script>
+    <script src="../static/crypto-js-4.2.0/crypto-js.js"></script> 
+    <script type="text/javascript">
+        function signMessage() {
+            var messages = []; // 创建一个数组用于存储所有文本框中的内容
+
+            // 获取文本框中的内容
+            messages.push(document.getElementById('participants').value)
+            messages.push(document.getElementById('start_date').value)
+            messages.push(document.getElementById('end_date').value)
+            messages.push(document.getElementById('info').value)
+
+            
+
+
+            var concatenatedMessage = messages.join("+"); // 将所有内容用“+”连接起来
+            
+            if (document.getElementById('p2').value != ''){
+                var pprivateKey = document.getElementById("p2_privateKey").files[0]; // 获取用户上传的私钥文件
+                var reader2 = new FileReader();
+                reader2.onload = function(event) {
+                var privateKeyText = event.target.result;
+                var jsEncrypt = new JSEncrypt();
+                jsEncrypt.setPrivateKey(privateKeyText); // 设置私钥
+
+                var signature = jsEncrypt.sign(concatenatedMessage, CryptoJS.SHA256, 'sha256'); // 使用私钥签名连接后的信息
+                document.getElementById('p2signature').value = signature; 
+                alert("p2签名已生成"); 
+                reader2.readAsText(pprivateKey);
+            };
+
+            
+            }
+            var cprivateKey = document.getElementById("p1_privateKey").files[0]; // 获取用户上传的私钥文
+            var reader1 = new FileReader();
+            
+
+            reader1.onload = function(event) {
+                var privateKeyText = event.target.result;
+                var jsEncrypt = new JSEncrypt();
+                jsEncrypt.setPrivateKey(privateKeyText); // 设置私钥
+
+                var signature = jsEncrypt.sign(concatenatedMessage, CryptoJS.SHA256, 'sha256'); // 使用私钥签名连接后的信息
+                document.getElementById('p1signature').value = signature; 
+                alert("p1签名已生成"); 
+            };
+
+            reader1.readAsText(cprivateKey);
+
+            
+        }
+    </script>
+    <title>Add Event</title>
+</head>
+<body>
+    <div class="top-bar">
+        <img class="logo" src="../static/logo.png" alt="logo">
+    </div>
+    
+    <h2>添加事件</h2>
+    <form action="/submitevent" method="post">
+        <label for="participants">参与者:</label>
+        <input type="text" id="participants" name="participants" value="{{ participants }}" readonly><br><br>
+
+        <label for="start_date">开始日期:</label>
+        <input type="text" id="start_date" name="start_date" value="{{ start_date }}" readonly><br><br>
+
+        <label for="end_date">结束日期:</label>
+        <input type="text" id="end_date" name="end_date" value="{{ end_date }}" readonly><br><br>
+
+        <label for="p2">事件的另一方:</label>
+        <input type="text" id="p2" name="p2" value=""><br><br>
+
+        <label for="info">事件信息:</label>
+        <textarea id="info" name="info"></textarea><br><br>
+
+        <input type="hidden" id="p1signature" name="p1signature" required><br><br>
+
+        <input type="hidden" id="p2signature" name="p2signature" value="" required><br><br>
+
+        <input type="submit" value="Submit Event">
+    </form>
+
+    <label for="privateKey">选择包含自己的RSA私钥文件</label>
+    <input type="file" id="p1_privateKey"><br><br>
+
+    <label for="privateKey">选择包含事件另一方RSA私钥的文件（没有就不用选）</label>
+    <input type="file" id="p2_privateKey"><br><br>
+
+    <!-- 按钮触发签名操作 -->
+    <button onclick=signMessage()>点击进行签名</button>
+    <div class="bottom-bar">
+        版权所属 张天逸
+    </div>
+
+</body>
+</html>

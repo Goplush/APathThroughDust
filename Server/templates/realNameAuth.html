@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <head>
+        <title>RSA签名</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.1.0/jsencrypt.min.js"></script>
+        <script src="../static/crypto-js-4.2.0/crypto-js.js"></script> 
+        <script type="text/javascript">
+            function signMessage() {
+                var messages = []; // 创建一个数组用于存储所有文本框中的内容
+    
+                // 获取文本框中的内容
+                messages.push(document.getElementById('real_name').value)
+                messages.push(document.getElementById('id_number').value)
+
+    
+                var concatenatedMessage = messages.join("+"); // 将所有内容用“+”连接起来
+                var privateKey = document.getElementById("privateKey").files[0]; // 获取用户上传的私钥文件
+                var reader = new FileReader();
+    
+                reader.onload = function(event) {
+                    var privateKeyText = event.target.result;
+                    var jsEncrypt = new JSEncrypt();
+                    jsEncrypt.setPrivateKey(privateKeyText); // 设置私钥
+    
+                    var signature = jsEncrypt.sign(concatenatedMessage, CryptoJS.SHA256, 'sha256'); // 使用私钥签名连接后的信息
+                    document.getElementById('signature').value = signature; 
+                    alert("签名已生成"); 
+                };
+    
+                reader.readAsText(privateKey);
+            }
+        </script>
+        <style>
+            /* 上方蓝条样式 */
+            .top-bar {
+              background-color: rgb(28, 161, 233);
+              height: 50px;
+              display: flex;
+              align-items: left;
+              justify-content: center;
+            }
+            
+            /* 下方蓝条样式 */
+            .bottom-bar {
+              background-color: rgb(28, 161, 233);
+              height: 50px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            
+            /* 图片样式 */
+            .logo {
+              max-width: 100px;
+              max-height: 100px;
+            }
+        </style>
+    </head>
+    <title>实名认证页面</title>
+</head>
+<body>
+    <div class="top-bar">
+        <img class="logo" src="../static/logo.png" alt="logo">
+    </div>
+    <h1>请进行实名认证</h1>
+
+    <form  method="POST">
+        <label for="nickname">昵称：</label>
+        <input type="text" id="nickname" name="nickname" required><br><br>
+
+        <label for="real_name">真实姓名：</label>
+        <input type="text" id="real_name" name="real_name" required><br><br>
+
+        <label for="id_number">身份证号码：</label>
+        <input type="text" id="id_number" name="id_number" required><br><br>
+
+        <input type="hidden" id="signature" name="signature" required><br><br>
+
+
+        <input type="submit" value="请生成签名后提交">
+    </form>
+
+    <!-- 选择包含RSA私钥的文件 -->
+    <label for="privateKey">选择包含RSA私钥的文件后按确定进行签名：</label>
+    <input type="file" id="privateKey"><br><br>
+
+    <!-- 按钮触发签名操作 -->
+    <button onclick=signMessage()>确定</button>
+
+    <div class="bottom-bar">
+        版权所属 张天逸
+    </div>
+    
+    
+    
+</body>
+</html>
